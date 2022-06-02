@@ -61,4 +61,4 @@ $$\large f_{dht}^{'}=F_{rec}(f_{dht}),f^{''}_{dht}=F_{rec}(f^{'}_{dht})$$
 由于在预融合阶段，信道数量和层次已经减少，在全融合阶段，我们直接将高层和低层层次串联起来，然后将串联馈送到预测头，以获得最终的全分辨率预测图，表示为：$$ \large S_c=F_{p}^{c}([cf_{e}^{low},F_{UP}^{8}(cf_{c}^{high})])$$其中$S_c$表示最终的显著性图，$F_{p}^{c}(\cdot)$表示一个预测头，由两个$3\times3$深度方向可分离卷积（然后是$BatchNorm$层和$ReLU$激活）、一个$3\times3Sigmoid$激活卷积以及一个$2\times$双线性上采样组成，以恢复原始输入大小。
 
 ## 损失函数
-总损失$\pounds$最终由深度分支损失$\pounds_{c}$和深度监管损失$\pounds_{d}$构成，$$ \large \pounds =\pounds_{c}(S_{c},G)+\pounds_{d}(S_{d},G)$$我们使用的是标准的交叉熵损失
+总损失$ \pounds$最终由深度分支损失$ \pounds_{c}$和深度监管损失$\pounds_{d}$构成，$$ \large \pounds = \pounds_{c}(S_{c},G)+\pounds_{d}(S_{d},G)$$我们使用的是标准的交叉熵损失
