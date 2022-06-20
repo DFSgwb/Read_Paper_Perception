@@ -15,11 +15,11 @@
 ### <center>DQW结构
 <div align="center"><img src="./image/DQW%E7%BB%93%E6%9E%84.PNG"></div>
 
-首先将低层特征$ f_{r}^{1}$ 和 $ f_{d}^{1}$ 转化为特征$ f_{rt^{'}}$和$ f_{dt^{'}}$,
-$$ \large f_{rt^{'}}=BConv_{1\times1}(f_{r}^{1}),f_{dt^{'}}=BConv_{1\times1}(f_{d}^{1})$$
+首先将低层特征$f_{r}^{1}$ 和 $f_{d}^{1}$ 转化为特征$ f_{rt^{'} }$和$ f_{dt^{'} }$,
+$$ \large f_{rt^{'} }=BConv_{1\times1}(f_{r}^{1}),f_{dt^{'} }=BConv_{1\times1}(f_{d}^{1})$$
 
 其中$BConv$表示$1\times1$卷积和$ReLU$激活函数，为了评估低级特征对齐，对这两个特征进行对齐编码
-$$ \large V_{BA}=\dfrac{GAP(f_{rt^{'}}\otimes f_{dt^{'}})}{GAP(f_{rt^{'}} + f_{dt^{'}})}$$
+$$ \large V_{BA}=\dfrac{GAP(f_{rt^{'} }\otimes f_{dt^{'} })}{GAP(f_{rt^{'} } + f_{dt^{'} })}$$
 
 其中$GAP(\cdot)$表示全局平均池化操作，$\otimes$表示按元素乘法。增强向量的计算方式：
 $$ \large V_{BA}^{ms}=[V_{BA},V_{BA}^{1},V_{BA}^{2}]$$ 
@@ -42,7 +42,7 @@ $$\large f_{dht}^{'}=F_{rec}(f_{dht}),f^{''}_{dht}=F_{rec}(f^{'}_{dht})$$
 最终实现整体注意力地图：
 $$\large \beta=BConv_{3 \times 3}(f_{ec}+f_{dht}^{''})$$
 
-最后获得五张深度整体注意图$\large\{{\beta_{1},\beta_{2},\beta_{3},\beta_{4},\beta_{5}}\}$如下图所示：  
+最后获得五张深度整体注意图$\large\{ {\beta_{1},\beta_{2},\beta_{3},\beta_{4},\beta_{5} }\}$如下图所示：  
 
 <div align="center"><img src="./image/DHA%E5%8F%AF%E8%A7%86%E5%8C%96.PNG"></div>
 
@@ -58,7 +58,7 @@ $$\large \beta=BConv_{3 \times 3}(f_{ec}+f_{dht}^{''})$$
 首先使用具有$BatchNorm$和$ReLU$激活的$3\times3$深度可分离卷积，表示为$DSConv_{3\times3}$,将压缩编码器特征$f_{c}^{i},(i=1,2,...6)$到统一信道16，然后使用通道注意算子$F_{CA}$通过加权不同信道来增强特征。这个过程可以表示为：
 $$\large cf_{c}^{i}=F_{CA}(DSConv_{3\times3}(f_{c}^{i}))$$
 其中$cf_{c}^{i}$表示压缩和增强功能。为了减少特征层次，作者将6个层次分为两个层次(低级层次和高级层次)
-$$ \large cf_{c}^{low}=\sum_{i=0}^{3}F_{UP}^{2^{i-1}}(cf_{c}^{i}),cf_{c}^{high}=\sum_{i=4}^{6}cf_{c}^{i}$$
+$$ \large cf_{c}^{low}=\sum_{i=0}^{3}F_{UP}^{2^{i-1} }(cf_{c}^{i}),cf_{c}^{high}=\sum_{i=4}^{6}cf_{c}^{i}$$
 
 ### 聚合模块
 
