@@ -45,3 +45,21 @@ $$\Large T_{gt}(x,y) =\begin{cases}
 <div align="center"><img src="image\HRRN结果可视化.PNG"></div>
 
 对于trimap的监督我们使用交叉熵损失
+$$\Large L_{trimap}=\dfrac{1}{N}\sum_{i}-log(\dfrac{e^{T_{i} } }{\sum_{j} e^{T_{j} } })$$
+为保障trimap的准确率，我们在trimap监督的基础上增加了额外显著性监督$L_{saliency}$，总损失是
+$$\Large L_{LRSCN}=L_{saliency}+L_{trimap}$$
+不使用不确定性损失，因为LRSCN的主要目标是获取足够的语义，而不是精确的边界。
+
+对于输入的高分辨率图像$I$，让$G^H$表示其背景真值，预测显著性图为$S^H$。我们利用$L_1$损失来比较预测显著性图和背景真值在明确的显著性和背景区域上的绝对差异：
+$$\Large L_1 = \dfrac{1}{E}\sum_{i\in E}|S_{i}^H-G_{i}^H|$$ 
+其中$E$表示在$trimap$中被标记为明确显着或背景的像素数，$S_{H}^i$和$G_{H}^i$表示位置$i$处的预测值和$groundtruth$值。
+由于数据集本身在注释质量方面存在一些问题，因此引入一个不确定损失来解决数据集本身带来的缺陷。使用高斯似然的方式建模不确定性
+$$\Large p(y|f(x))=N(f(x),\delta^2)$$
+其中$\delta$表示测量的不确定性，$y$是输出，在最大似然推断中，我们将模型的对数似然最大化，表示为:
+$$\Large logp(y|f(x))\propto-\dfrac{||y-f(x)||}{2\delta^2}-\dfrac{1}{2}log{\delta^2}$$
+则不确定损失定义为：
+$$\Large L_{uncertainty}=\dfrac{||y-f(x)||^2}{2\delta^2}+\dfrac{1}{2}log\delta^2$$
+将其转化为像素的表达形式：
+$$\Large L_{uncertainty}=\dfrac{1}{U}\dfrac{||S_{i}^H-G_{i}^H||}{2\delta_{i}^2}+\dfrac{1}{2}log\delta_{i}^2$$
+### <center>HRRN损失可视化</center>
+<div align="center"><img src="image\HRRN损失可视化.PNG"></div>
